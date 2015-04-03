@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="./kendo/styles/kendo.common.min.css" />
+    <link rel="stylesheet" href="./kendo/styles/kendo.default.min.css" />
+    <link rel="stylesheet" href="./kendo/styles/kendo.dataviz.min.css" />
+    <link rel="stylesheet" href="./kendo/styles/kendo.dataviz.default.min.css" />
+    <link rel="stylesheet" href="./kendo/styles/kendo.mobile.all.min.css" />
+    <link rel="stylesheet" href="./kendo/styles/font-awesome.css" />
+
+    <link rel="stylesheet" href="./kendo/styles/km-fa-font.css" />
+    <link href="./kendo/styles/style.css" rel="stylesheet" />
+    <link rel="stylesheet" href="./kendo/styles/main.css" />
+
+    <script src="./cordova.js"></script>
+    <script data-main="./kendo/js/main" src="./kendo/js/lib/require.min.js"></script>
+
+</head>
+<body style="overflow-y: hidden; background-image: url(./Images/Background.png); background-size: 100%;">
+
+    <div id='cssmenu' style="z-index: 999999; background-image: url(./Images/Background1.png); background-size: 100%; width: 100%;">
+        <ul class="TopMenu">
+            <li id="customermenu"><a href='customerView' data-role="button" onclick="loadCustomer(this)"><span>Customer</span></a></li>
+            <li id="garagemenu" class='active'><a href='garagepageView' data-role="button" onclick="loadInGarage(this)"><span>In Garage</span></a></li>
+            <li id="ordermenu" style="width: 31%; border-right: 0;"><a href='ordersView' data-role="button" onclick="loadOrder(this)"><span>Orders</span></a></li>
+        </ul>
+        <div class="customsearchpanel">
+            <div class="appmenustyle">
+                <img src="./Images/menu.png" style="width: 41px; padding-top: 4px; padding-left: 7px;" />
+            </div>
+            <div class="searchbox" style="width: 70%">
+                <form id="live-search" action="" class="styled" method="post" style="border: 0px;">
+                    <fieldset style="border: 0px;">
+                        <input type="text" class="text-input searchTextBox" style="background-image: url(./Images/whitebackground.jpg); width: 100%;" id="filter" value="" />
+                        <span id="filter-count" style="display: none;"></span>
+                    </fieldset>
+                </form>
+            </div>
+            <div id="addbutton" style="display: none;">
+                <a href="customerEditview" data-role="button" onclick="NewCustomer()">
+                    <img src="./Images/add.png" style="width: 38px; margin-left: -1px; margin-top: 7px;" /></a>
+            </div>
+        </div>
+        <div class="ordermenu">
+            <ul class="menu">
+                <li><a href="CreateOrder"><span class="fa fa-plus"></span>Create</a></li>
+                <li><a href="WorkOrder">Work</a></li>
+                <li><a href="ordersView">Order</a></li>
+            </ul>
+        </div>
+
+        <div class="cd-popup" role="alert">
+            <div class="cd-popup-container">
+                <p id="popupMessage"></p>
+                <ul class="cd-buttons">
+                    <li><a id="confirmOk">Ok</a></li>
+                    <li style="display:none;"><a>Cancel</a></li>
+                </ul>
+                <a class="cd-popup-close img-replace"></a>
+            </div>
+            <!-- cd-popup-container -->
+        </div>
+        <!-- cd-popup -->
+
+    </div>
+
+
+    <div id="garagepageView"
+        data-role="view"
+        data-title="Garage"
+        data-show="loadInGarage"
+        data-transition="slide:right"
+        data-model="app.garageService.viewModel" class="listviewstyle commentlist">
+        <div class="workorder" style="padding-top: 90px;">
+            <ul id="garage" class="forecast-list garage-list"
+                data-role="listview"
+                data-bind="source: garageDataSource">
+            </ul>
+        </div>
+    </div>
+
+    <div id="customerView"
+        data-role="view"
+        data-title="Customer List"
+        data-transition="slide:right"
+        data-show="loadCustomer"
+        data-model="app.customerService.viewModel">
+        <div class="customer" style="padding-top: 90px;">
+            <ul id="customer" class="forecast-list customerList"
+                data-role="listview"
+                data-bind="source: customerDataSource">
+            </ul>
+        </div>
+    </div>
+    <div id="customerEditview"
+        data-role="view"
+        data-title="Customer"
+        data-show="loadCustomerEdit"
+        data-model="app.customerService.viewModel"
+        data-transition="slide:right"
+        data-init="initForm"
+        data-use-native-scrolling="true">
+
+        <form action="./index.html" style="margin-top: 70px;">
+            <ul class="customerEdit" data-role="listview" data-style="inset">
+                <li>
+                    <label class="labelname">
+                        Name
+                    <input type="search" id="name" class="text-input" style="background: url('./Images/whitebackground.jpg')no-repeat; width: 66%; margin-right: 5px;" value="" />
+                    </label>
+                </li>
+                <li>
+                    <label class="labelname">
+                        Phone
+                <input type="search" id="phone" class="text-input" style="background-image: url('./Images/whitebackground.jpg'); width: 66%; margin-right: 5px;" value="" />
+                    </label>
+                </li>
+                <li>
+                    <label class="labelname">
+                        Email
+                <input type="search" id="email" class="text-input" style="background-image: url('./Images/whitebackground.jpg'); width: 66%; margin-right: 5px;" value="" />
+                    </label>
+                </li>
+                <li>
+                    <label class="labelname">
+                        Address
+                <input type="search" id="address" class="text-input" style="background-image: url('./Images/whitebackground.jpg'); width: 66%; margin-right: 5px;" value="" />
+                    </label>
+                </li>
+                <li>
+                    <label class="labelname">
+                        POBox
+                    <input type="search" id="pobox" class="text-input" style="background-image: url('./Images/whitebackground.jpg'); width: 66%; margin-right: 5px;" value="" />
+                    </label>
+                </li>
+
+            </ul>
+            <div class="additemlist">
+                <div class="itemlabel">
+                    Vehicle
+                </div>
+                <div class="itemaddbutton">
+                    <img src="./Images/menuadd.png" class="addbutton" alt="Mountain View" style="">
+                </div>
+            </div>
+            <div id="p_scents">
+            </div>
+            <input type="button" id="createCustomer" class="submit" value="Done">
+        </form>
+    </div>
+
+    <div id="ordersView"
+        data-role="view"
+        data-title="Orders"
+        data-show="loadOrder"
+        data-transition="slide:left"
+        data-model="app.ordersService.viewModel">
+        <div class="workorder" style="padding-top: 124px;">
+            <ul id="order" class="order-list orderList"
+                data-role="listview"
+                data-bind="source: orderDataSource">
+            </ul>
+        </div>
+    </div>
+
+</body>
+</html>

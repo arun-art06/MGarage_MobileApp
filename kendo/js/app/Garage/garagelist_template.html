@@ -1,0 +1,48 @@
+
+<!--<div class="ingarge" id="#=ID#">
+    <div style="width: 100%; display: inline-block;">
+        <div class="firstingarge">
+            <img src="#=image#" class="innerimage" alt="#=image#" style="">
+        </div>
+        <div class="secondingarge">
+            <h3 class="gargetext brand" style="margin-left:0px;">#=brand#</h3>
+            <p class="gargetext model" style="margin-left:0px;margin-top:5px;">#=model#</p>
+            <p class="gargetext1 plate">#=plate#</p>
+        </div>
+        <div class="thirdingarge">
+             # if (status=="I") { #
+            <p class="statustext" style="padding:0px;">WIP</p>
+            <img src="./Images/wip.png" class="status wip" alt="work in progress" style="margin-top:-9px;">
+            # } else if (status=="R"){ #
+            <p class="wip" style="padding:0px;">Ready</p>
+            <img src="./Images/ready.png" class="status ready" alt="ready" style="margin-top:-9px">
+            # } # 
+        </div>
+    </div>
+    <div class="downArrow">
+        <img src="./Images/downArrow.png" class="downarrow" alt="Mountain View" style="">
+    </div>
+</div>-->
+
+<div class="work-item" id="#=ID#">
+    <div class="position-left">
+        <img src="${image}?height=50&width=50&mode=crop" style="" />
+    </div>
+    <div class="position-right">
+        # if (status=="I") { #
+        <div class="workorder-status">WIP</div>
+        <i class="fa fa-refresh fa-2x workorder-status-icon" />
+        # } else if (status=="R"){ #
+        <div class="workorder-status">Ready</div>
+        <i class="fa fa-check-circle-o fa-2x workorder-status-icon" />
+        # } #   
+    </div>
+    <div class="position-center">
+        <div class="workorder-brand">${brand}</div>
+        <div class="workorder-model">${model}</div>
+        <div class="workorder-plate">${plate}</div>
+    </div>
+    <div class="downArrow">
+        <img src="./Images/downArrow.png" data-garageid="#=ID#" class="downarrow" alt="Mountain View" style="">
+    </div>
+</div>
