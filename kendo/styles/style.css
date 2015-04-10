@@ -588,3 +588,94 @@ input
     width: 66%;
     margin-right: 5px;
 }
+
+
+/* Login Screen */
+
+.loginPanel {
+	border-radius: none;
+	text-align: center;
+	width: 100%;
+	 margin-top: 17px;
+}
+.loginPanel input {
+	background: #ffffff;
+	width: 90%;
+	border-radius: none;
+	background-color: #fff/*{a-body-background-color}*/;
+	border-color: #ddd/*{a-body-border}*/;
+	color: #333/*{a-body-color}*/;
+	text-shadow: 0/*{a-body-shadow-x}*/1px/*{a-body-shadow-y}*/0/*{a-body-shadow-radius}*/#f3f3f3/*{a-body-shadow-color}*/;
+}
+.loginPanel div {
+	background: transparent;
+	border-width: none;
+	border-style: none;
+	box-shadow: none;
+	margin-bottom:30px;
+}
+.loginPanel .ui-focus {
+	border: none;
+	box-shadow: none;
+}
+
+.ui-overlay-a, .ui-page-theme-a, .ui-page-theme-a .ui-panel-wrapper {
+	background: transparent;
+}
+.fbg {
+	position: absolute;
+	left: 0;
+	z-index: -1;
+}
+.loginRibbon {
+	width: 14%;
+	margin-left: 20px;
+	float: left;
+	
+}
+.imgstyle {
+	width: 100%;
+}
+.lgn-topcss {
+	background: url(../images/login-bg-m.png) repeat-x;
+	background-size: 370px;
+	height: 39px;
+	font-size:25px;
+	color:#fff;
+	font-weight:bold;
+	text-align:center;
+	text-shadow: none;
+}
+.logoRibbon {
+	z-index: 9999;
+	margin-top: -10px;
+}
+.topbg {
+	height: 39px;
+}
+.loginBanner {
+	width: 70%;
+	float: left;
+}
+.loginAction{
+	float:left;
+	width:30%;
+	margin: 1em 0;
+	text-align:center;
+}
+.loginActionleft
+{
+	width:70%;
+	float:left;
+}
+.lgnBtn{
+	width:35%;
+}
+.rememberIcon{
+	width:85%;
+}
+.collumn{
+	width:50%;
+	margin: 1em 0;
+	float:left;
+}

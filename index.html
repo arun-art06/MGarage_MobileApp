@@ -11,61 +11,126 @@
     <link rel="stylesheet" href="./kendo/styles/font-awesome.css" />
 
     <link rel="stylesheet" href="./kendo/styles/km-fa-font.css" />
+    `
     <link href="./kendo/styles/style.css" rel="stylesheet" />
     <link rel="stylesheet" href="./kendo/styles/main.css" />
 
-    <script src="./cordova.js"></script>
+    <!--<script src="./cordova.android.js"></script>-->
     <script data-main="./kendo/js/main" src="./kendo/js/lib/require.min.js"></script>
 
 </head>
 <body style="overflow-y: hidden; background-image: url(./Images/Background.png); background-size: 100%;">
 
-    <div id='cssmenu' style="z-index: 999999; background-image: url(./Images/Background1.png); background-size: 100%; width: 100%;">
-        <ul class="TopMenu">
-            <li id="customermenu"><a href='customerView' data-role="button" onclick="loadCustomer(this)"><span>Customer</span></a></li>
-            <li id="garagemenu" class='active'><a href='garagepageView' data-role="button" onclick="loadInGarage(this)"><span>In Garage</span></a></li>
-            <li id="ordermenu" style="width: 31%; border-right: 0;"><a href='ordersView' data-role="button" onclick="loadOrder(this)"><span>Orders</span></a></li>
-        </ul>
-        <div class="customsearchpanel">
-            <div class="appmenustyle">
-                <img src="./Images/menu.png" style="width: 41px; padding-top: 4px; padding-left: 7px;" />
-            </div>
-            <div class="searchbox" style="width: 70%">
-                <form id="live-search" action="" class="styled" method="post" style="border: 0px;">
-                    <fieldset style="border: 0px;">
-                        <input type="text" class="text-input searchTextBox" style="background-image: url(./Images/whitebackground.jpg); width: 100%;" id="filter" value="" />
-                        <span id="filter-count" style="display: none;"></span>
-                    </fieldset>
-                </form>
-            </div>
-            <div id="addbutton" style="display: none;">
-                <a href="customerEditview" data-role="button" onclick="NewCustomer()">
-                    <img src="./Images/add.png" style="width: 38px; margin-left: -1px; margin-top: 7px;" /></a>
-            </div>
-        </div>
-        <div class="ordermenu">
-            <ul class="menu">
-                <li><a href="CreateOrder"><span class="fa fa-plus"></span>Create</a></li>
-                <li><a href="WorkOrder">Work</a></li>
-                <li><a href="ordersView">Order</a></li>
-            </ul>
-        </div>
+    <!-- Header && Footer-->
+    <div data-role="layout" data-id="layout">
+        <header data-role="header">
+            <!-- <div data-role="tabstrip">-->
+            <div class="topmenuStyle" style="z-index: 999999; display: inline-block; background-image: url(./Images/Background1.png); background-size: 100%; width: 100%;">
+                <div id='cssmenu' style="z-index: 999999; background-image: url(./Images/Background1.png); background-size: 100%; width: 100%;">
+                    <ul class="TopMenu">
+                        <li id="customermenu"><a href='customerView' data-role="button" onclick="loadCustomer(this)"><span>Customer</span></a></li>
+                        <li id="garagemenu" class='active'><a href='garagepageView' data-role="button" onclick="loadInGarage(this)"><span>In Garage</span></a></li>
+                        <li id="ordermenu" style="width: 31%; border-right: 0;"><a href='ordersView' data-role="button" onclick="loadOrder(this)"><span>Orders</span></a></li>
+                    </ul>
+                </div>
 
-        <div class="cd-popup" role="alert">
-            <div class="cd-popup-container">
-                <p id="popupMessage"></p>
-                <ul class="cd-buttons">
-                    <li><a id="confirmOk">Ok</a></li>
-                    <li style="display:none;"><a>Cancel</a></li>
-                </ul>
-                <a class="cd-popup-close img-replace"></a>
-            </div>
-            <!-- cd-popup-container -->
-        </div>
-        <!-- cd-popup -->
+                <div class="customsearchpanel" style="display: none; width: 100%;">
+                    <div class="appmenustyle">
+                        <img src="./Images/menu.png" style="width: 44px; padding-top: 6px; padding-left: 7px;" />
+                    </div>
+                    <div class="searchbox" style="width: 70%">
+                        <form id="live-search" action="" class="styled" method="post" style="border: 0px;">
+                            <fieldset style="border: 0px;">
+                                <input type="text" class="text-input searchTextBox" style="background-image: url(./Images/whitebackground.jpg); width: 100%; height: 35px;" id="filter" value="" />
+                                <span id="filter-count" style="display: none;"></span>
+                            </fieldset>
+                        </form>
+                    </div>
+                    <div id="addbutton" class="addbutton1" style="display: block; width: 16%; text-align: center; float: right;">
+                        <a data-role="button" style="border: none;" onclick="NewCustomer(this)">
+                            <img src="./Images/add.png" style="width: 38px; margin-left: -1px; margin-top: 0px;" /></a>
+                    </div>
+                </div>
+                <div class="ordermenu" style="display: inline-block; width: 100%;">
+                    <ul class="menu">
+                        <li><a href="CreateOrder"><span class="fa fa-plus"></span>Create</a></li>
+                        <li><a href="WorkOrder">Work</a></li>
+                        <li><a href="ordersView">Order</a></li>
+                    </ul>
+                </div>
 
+                <div class="cd-popup" role="alert">
+                    <div class="cd-popup-container">
+                        <p id="popupMessage"></p>
+                        <ul class="cd-buttons">
+                            <li><a id="confirmOk">Ok</a></li>
+                            <li style="display: none;"><a>Cancel</a></li>
+                        </ul>
+                        <a class="cd-popup-close img-replace"></a>
+                    </div>
+                    <!-- cd-popup-container -->
+                </div>
+
+                <div class="cd-vehicleaddpopup" role="alert">
+                    <div class="cd-vehicleaddpopup-container">
+                        <ul class="customerEdit">
+                            <li>
+                                <label>
+                                    <span style="margin-right: 10px;">Brand</span>
+                                    <input id="vehicleBrand" value="0" />
+                                </label>
+                            </li>
+                            <li>
+                                <label>
+                                    <span style="margin-right: 10px;">Model</span>
+                                    <input id="vehicleModel" value="0" />
+                                </label>
+                            </li>
+                            <li>
+                                <label>
+                                    Plate
+                                    <input type="text" id="vehiclePlateNumber" class="text-input vehicleplatenumber" />
+                                </label>
+                            </li>
+                            <li>
+                                <label id="errorMessage"></label>
+                            </li>
+                        </ul>
+                        <ul class="cd-buttons" style="margin-top: 12px;">
+                            <li><a id="addvehicle">Add</a></li>
+                            <li style="display: none;"><a>Cancel</a></li>
+                        </ul>
+                        <a class="cd-vehicleaddpopup-close img-replace"></a>
+                    </div>
+                </div>
+
+            </div>
+            <!--</div>-->
+        </header>
     </div>
 
+    <div id="loginview"
+        data-role="view"
+        data-title="Login"
+        data-transition="slide:left">
+        <h3>Sign In</h3>
+        <ul data-role="listview" data-style="inset">
+            <li>
+                <label>
+                    Email
+                    <input id="usr_email" type="text"  />
+                </label>
+            </li>
+            <li>
+                <label>
+                    Password
+                    <input id="usr_password" type="text"   />
+                </label>
+            </li>
+        </ul>
+        <a href="#dlg-invalid-credentials" data-rel="popup" data-transition="pop" data-position-to="window" id="btn-submit" class="ui-btn ui-btn-b ui-corner-all mc-top-margin-1-5">Submit</a>
+        <p class="mc-top-margin-1-5"><a href="begin-password-reset.html">Can't access your account?</a></p>
+    </div>
 
     <div id="garagepageView"
         data-role="view"
@@ -73,7 +138,7 @@
         data-show="loadInGarage"
         data-transition="slide:right"
         data-model="app.garageService.viewModel" class="listviewstyle commentlist">
-        <div class="workorder" style="padding-top: 90px;">
+        <div class="workorder">
             <ul id="garage" class="forecast-list garage-list"
                 data-role="listview"
                 data-bind="source: garageDataSource">
@@ -87,7 +152,7 @@
         data-transition="slide:right"
         data-show="loadCustomer"
         data-model="app.customerService.viewModel">
-        <div class="customer" style="padding-top: 90px;">
+        <div class="customer">
             <ul id="customer" class="forecast-list customerList"
                 data-role="listview"
                 data-bind="source: customerDataSource">
@@ -98,56 +163,55 @@
         data-role="view"
         data-title="Customer"
         data-show="loadCustomerEdit"
-        data-model="app.customerService.viewModel"
-        data-transition="slide:right"
-        data-init="initForm"
-        data-use-native-scrolling="true">
+        data-transition="slide:right">
 
-        <form action="./index.html" style="margin-top: 70px;">
-            <ul class="customerEdit" data-role="listview" data-style="inset">
-                <li>
-                    <label class="labelname">
-                        Name
+        <form action="./index.html">
+            <div data-role="scroller" class="scroller-content">
+
+                <ul class="customerEdit" data-role="listview" data-style="inset">
+                    <li>
+                        <label class="labelname">
+                            Name
                     <input type="search" id="name" class="text-input" style="background: url('./Images/whitebackground.jpg')no-repeat; width: 66%; margin-right: 5px;" value="" />
-                    </label>
-                </li>
-                <li>
-                    <label class="labelname">
-                        Phone
+                        </label>
+                    </li>
+                    <li>
+                        <label class="labelname">
+                            Phone
                 <input type="search" id="phone" class="text-input" style="background-image: url('./Images/whitebackground.jpg'); width: 66%; margin-right: 5px;" value="" />
-                    </label>
-                </li>
-                <li>
-                    <label class="labelname">
-                        Email
+                        </label>
+                    </li>
+                    <li>
+                        <label class="labelname">
+                            Email
                 <input type="search" id="email" class="text-input" style="background-image: url('./Images/whitebackground.jpg'); width: 66%; margin-right: 5px;" value="" />
-                    </label>
-                </li>
-                <li>
-                    <label class="labelname">
-                        Address
+                        </label>
+                    </li>
+                    <li>
+                        <label class="labelname">
+                            Address
                 <input type="search" id="address" class="text-input" style="background-image: url('./Images/whitebackground.jpg'); width: 66%; margin-right: 5px;" value="" />
-                    </label>
-                </li>
-                <li>
-                    <label class="labelname">
-                        POBox
+                        </label>
+                    </li>
+                    <li>
+                        <label class="labelname">
+                            POBox
                     <input type="search" id="pobox" class="text-input" style="background-image: url('./Images/whitebackground.jpg'); width: 66%; margin-right: 5px;" value="" />
-                    </label>
-                </li>
-
-            </ul>
-            <div class="additemlist">
-                <div class="itemlabel">
-                    Vehicle
+                        </label>
+                    </li>
+                </ul>
+                <div class="additemlist">
+                    <div class="itemlabel">
+                        Vehicle
+                    </div>
+                    <div class="itemaddbutton">
+                        <img src="./Images/menuadd.png" class="addbutton" alt="Mountain View" style="">
+                    </div>
                 </div>
-                <div class="itemaddbutton">
-                    <img src="./Images/menuadd.png" class="addbutton" alt="Mountain View" style="">
+                <div id="p_scents">
                 </div>
+                <input type="button" id="createCustomer" class="submit" value="Done">
             </div>
-            <div id="p_scents">
-            </div>
-            <input type="button" id="createCustomer" class="submit" value="Done">
         </form>
     </div>
 
@@ -157,12 +221,22 @@
         data-show="loadOrder"
         data-transition="slide:left"
         data-model="app.ordersService.viewModel">
-        <div class="workorder" style="padding-top: 124px;">
+        <div class="workorder">
             <ul id="order" class="order-list orderList"
                 data-role="listview"
                 data-bind="source: orderDataSource">
             </ul>
         </div>
+    </div>
+
+    <!-- order create -->
+    <div id="createOrder"
+        data-role="view"
+        data-title="Create Order"
+        data-transition="slide:left">
+        <div>
+        </div>
+
     </div>
 
 </body>

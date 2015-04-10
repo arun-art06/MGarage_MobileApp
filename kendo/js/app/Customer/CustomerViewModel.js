@@ -15,7 +15,7 @@ define([
             var dataSource = new kendo.data.DataSource({
                 transport: {
                         read: {
-                            url: "http://192.168.2.17:8069/openacademy/OpenacademyCustomer/list/",
+                            url: baseUrl+"/list/",
                             dataType: "json"
                         }
                     }               

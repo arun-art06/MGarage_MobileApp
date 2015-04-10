@@ -370,7 +370,7 @@ ul.garage > li:after {
     border: 0px;
     background-color: rgba(0, 0, 0, 0.2);
 }
- 
+
 
 .work-item {
     margin-top: 4px;
@@ -552,8 +552,8 @@ ul.garage > li:after {
     font-weight: bolder;
     letter-spacing: 2px;
     text-shadow: 0 0 1px rgba(255, 255, 255, 1), 0 0 2px rgba(0, 0, 0, 1);
-    float:left;
-    vertical-align:middle;
+    float: left;
+    vertical-align: middle;
 }
 
 .additemlist {
@@ -818,7 +818,7 @@ xpopup
 
 .cd-popup-container {
     position: relative;
-    padding:2px;
+    padding: 2px;
     width: 90%;
     max-width: 400px;
     margin: 4em auto;
@@ -843,8 +843,8 @@ xpopup
 
     .cd-popup-container p {
         padding: 3em 1em;
-        font-family:Arial;
-        font-weight:700;
+        font-family: Arial;
+        font-weight: 700;
     }
 
     .cd-popup-container .cd-buttons:after {
@@ -855,10 +855,9 @@ xpopup
 
     .cd-popup-container .cd-buttons li {
         /*float: left;*/
-        left: 50%;
-        transform: translateX(50%);
+        margin: 0 auto;
         width: 150px;
-        cursor:pointer;
+        cursor: pointer;
     }
 
     .cd-popup-container .cd-buttons a {
@@ -870,8 +869,8 @@ xpopup
         -webkit-transition: background-color 0.2s;
         -moz-transition: background-color 0.2s;
         transition: background-color 0.2s;
-        font-family:Arial;
-        font-weight:700;
+        font-family: Arial;
+        font-weight: 700;
     }
 
     .cd-popup-container .cd-buttons li:first-child a {
@@ -898,7 +897,7 @@ xpopup
         right: 8px;
         width: 30px;
         height: 30px;
-        cursor:pointer;
+        cursor: pointer;
     }
 
         .cd-popup-container .cd-popup-close::before, .cd-popup-container .cd-popup-close::after {
@@ -963,3 +962,235 @@ table {
     border-spacing: 0;
 }
 /******************************  POP UP END****************************************/
+.km-ios7 .km-list input[type="password"], .km-ios7 .km-list input[type="search"], .km-ios7 .km-list input[type="number"], .km-ios7 .km-list input[type="tel"], .km-ios7 .km-list input[type="url"], .km-ios7 .km-list input[type="email"], .km-ios7 .km-list input[type="month"], .km-ios7 .km-list input[type="color"], .km-ios7 .km-list input[type="week"], .km-ios7 .km-list input[type="date"], .km-ios7 .km-list input[type="time"], .km-ios7 .km-list input[type="datetime"], .km-ios7 .km-list input[type="datetime-local"], .km-ios7 .km-list input[type="text"]:not(.k-input), .km-ios7 .km-list select:not([multiple]), .km-ios7 .km-list .k-dropdown-wrap, .km-ios7 .km-list textarea {
+    z-index: 0;
+}
+
+
+/*******************************  customer vehicle add popup *************************************/
+
+.cd-vehicleaddpopup-trigger {
+    display: block;
+    width: 170px;
+    height: 50px;
+    line-height: 50px;
+    margin: 3em auto;
+    text-align: center;
+    color: #FFF;
+    font-size: 14px;
+    font-size: 0.875rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    border-radius: 50em;
+    background: #35a785;
+    box-shadow: 0 3px 0 rgba(0, 0, 0, 0.07);
+}
+
+@media only screen and (min-width: 1170px) {
+    .cd-vehicleaddpopup-trigger {
+        margin: 6em auto;
+    }
+}
+
+/* -------------------------------- 
+
+xpopup 
+
+-------------------------------- */
+.cd-vehicleaddpopup {
+    position: fixed;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 100%;
+    background-color: rgba(94, 110, 141, 0.9);
+    opacity: 0;
+    visibility: hidden;
+    -webkit-transition: opacity 0.3s 0s, visibility 0s 0.3s;
+    -moz-transition: opacity 0.3s 0s, visibility 0s 0.3s;
+    transition: opacity 0.3s 0s, visibility 0s 0.3s;
+}
+
+    .cd-vehicleaddpopup.is-visible {
+        opacity: 1;
+        visibility: visible;
+        -webkit-transition: opacity 0.3s 0s, visibility 0s 0s;
+        -moz-transition: opacity 0.3s 0s, visibility 0s 0s;
+        transition: opacity 0.3s 0s, visibility 0s 0s;
+    }
+
+.cd-vehicleaddpopup-container {
+    position: relative;
+    padding: 20px;
+    width: 90%;
+    max-width: 400px;
+    margin: 4em auto;
+    background: #333;
+    border-radius: .25em .25em .4em .4em;
+    text-align: center;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+    -webkit-transform: translateY(-40px);
+    -moz-transform: translateY(-40px);
+    -ms-transform: translateY(-40px);
+    -o-transform: translateY(-40px);
+    transform: translateY(-40px);
+    /* Force Hardware Acceleration in WebKit */
+    -webkit-backface-visibility: hidden;
+    -webkit-transition-property: -webkit-transform;
+    -moz-transition-property: -moz-transform;
+    transition-property: transform;
+    -webkit-transition-duration: 0.3s;
+    -moz-transition-duration: 0.3s;
+    transition-duration: 0.3s;
+}
+
+    .cd-vehicleaddpopup-container p {
+        padding: 3em 1em;
+        font-family: Arial;
+        font-weight: 700;
+    }
+
+    .cd-vehicleaddpopup-container .cd-buttons:after {
+        content: "";
+        display: table;
+        clear: both;
+    }
+
+    .cd-vehicleaddpopup-container .cd-buttons li {
+        /*float: left;*/
+        margin: 0 auto;
+        width: 150px;
+        cursor: pointer;
+    }
+
+    .cd-vehicleaddpopup-container .cd-buttons a {
+        display: block;
+        height: 39px;
+        line-height: 39px;
+        text-transform: uppercase;
+        color: #FFF;
+        -webkit-transition: background-color 0.2s;
+        -moz-transition: background-color 0.2s;
+        transition: background-color 0.2s;
+        font-family: Arial;
+        font-weight: 700;
+    }
+
+    .cd-vehicleaddpopup-container .cd-buttons li:first-child a {
+        background: #fc7169;
+        border-radius: 0 0 0 .25em;
+    }
+
+        .no-touch .cd-vehicleaddpopup-container .cd-buttons li:first-child a:hover {
+            background-color: #fc8982;
+        }
+
+    .cd-vehicleaddpopup-container .cd-buttons li:last-child a {
+        background: #b6bece;
+        border-radius: 4px;
+    }
+
+        .no-touch .cd-vehicleaddpopup-container .cd-buttons li:last-child a:hover {
+            background-color: #c5ccd8;
+        }
+
+    .cd-vehicleaddpopup-container .cd-vehicleaddpopup-close {
+        position: absolute;
+        top: 8px;
+        right: 8px;
+        width: 30px;
+        height: 30px;
+        cursor: pointer;
+    }
+
+        .cd-vehicleaddpopup-container .cd-vehicleaddpopup-close::before, .cd-vehicleaddpopup-container .cd-vehicleaddpopup-close::after {
+            content: '';
+            position: absolute;
+            top: 12px;
+            width: 14px;
+            height: 3px;
+            background-color: #8f9cb5;
+        }
+
+        .cd-vehicleaddpopup-container .cd-vehicleaddpopup-close::before {
+            -webkit-transform: rotate(45deg);
+            -moz-transform: rotate(45deg);
+            -ms-transform: rotate(45deg);
+            -o-transform: rotate(45deg);
+            transform: rotate(45deg);
+            left: 8px;
+        }
+
+        .cd-vehicleaddpopup-container .cd-vehicleaddpopup-close::after {
+            -webkit-transform: rotate(-45deg);
+            -moz-transform: rotate(-45deg);
+            -ms-transform: rotate(-45deg);
+            -o-transform: rotate(-45deg);
+            transform: rotate(-45deg);
+            right: 8px;
+        }
+
+.is-visible .cd-vehicleaddpopup-container {
+    -webkit-transform: translateY(0);
+    -moz-transform: translateY(0);
+    -ms-transform: translateY(0);
+    -o-transform: translateY(0);
+    transform: translateY(0);
+}
+
+@media only screen and (min-width: 1170px) {
+    .cd-vehicleaddpopup-container {
+        margin: 8em auto;
+    }
+}
+
+ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+blockquote, q {
+    quotes: none;
+}
+
+    blockquote:before, blockquote:after,
+    q:before, q:after {
+        content: '';
+        content: none;
+    }
+
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+ul.customerEdit li {
+    margin-top: 10px;
+}
+
+.vehicleplatenumber {
+    height: 40px;
+    background-image: url("./../../Images/whitebackground.jpg");
+    color: #000;
+    width: 58%;
+    margin-top: -6px;
+    margin-left: 11px;
+    margin-right: -5px;
+    font-size: 1.1rem;
+}
+
+.k-input{
+     font-size: 1.1rem;
+}
+
+#errorMessage{
+    color:red;
+}
+.vehicleinput label{
+    color:#ffffff;
+    font-family: Arial;
+    font-size: 15px;
+    font-weight:bold;
+    margin-left: 8px;
+}
