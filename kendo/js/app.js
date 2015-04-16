@@ -20,7 +20,7 @@ define([
         },
         init: function () {
             this.kendoApp = new kendo.mobile.Application(document.body, { layout: "layout", statusBarStyle: statusBarStyle });
-            loadInGarage();
+            //loadInGarage();
         },
         loadCustomer: function (e) {
                 app.customerService.viewModel = new customerViewModel($("#customer"));
@@ -29,6 +29,7 @@ define([
         },
         loadInGarage: function (e) {
             app.garageService.viewModel = new garageViewModel($("#garage"));
+            kendo.bind($("#garagepageView"), app.garageService.viewModel);
         },
         loadOrder: function (e) {
             this.ordersService.viewModel = new ordersViewModel($("#order"));

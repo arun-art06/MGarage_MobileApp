@@ -35,6 +35,9 @@ var Global = {
     objVehicleModelDropDownList: "",
     objVehicleBrandDropDownList: "",
     VehicleDropdownloaded: false,
+    GetVehicleModelUrl: "",
+    CustomerCreatesNewVehicle: false,
+    SelectedCustomerId: 0,
 
 };
 
@@ -110,75 +113,99 @@ require(['kendo', 'app'], function (kendo, app) {//['app'], function (app) {
 
     $('.addbutton').click(function () {
 
-        if (Global.VehicleDropdownloaded == false) {
-            loadVehicleDropDowns();
-        }
+        clearVehicleInputValues();
 
-        Global.objVehicleBrandDropDownList.select(0);
-        Global.objVehicleModelDropDownList.select(0);
-        $("#vehiclePlateNumber").val('');
-        Global.NewVehicleBrand = "";
-        Global.NewVehicleBrandId = "";
-        Global.NewVehicleModel = "";
-        Global.NewVehicleModelId = "";
+        var link = document.createElement('a');
+        link.href = "#AddCustomerVehicle";
+        document.body.appendChild(link);
+        link.click();
 
-        $(".km-header").css("visibility", "hidden");
-        $('.cd-vehicleaddpopup').addClass('is-visible');
-
-        return false;
+        loadVehicleDropDowns();
     });
 
     //// Create New customer
     $("#createCustomer").click(function () {
         var NewCustomerUrl = baseUrl + "/customerAdd";
-        //NewCustomerUrl = NewCustomerUrl + "?name=" + $("#name").val() + "&street=" + $("#address").val();
-        //debugger;
-        //$.ajax({
-        //    type: "POST",
-        //    url: NewCustomerUrl,
-        //    success: function (response) {
-        //        debugger;
-        //        if (response == 'success')
-        //            $("#myForm").slideUp('slow', function () {
-        //                $("#msg").html("<p class='success'>You have logged in successfully!</p>");
-        //            });
-        //        else
-        //            $("#msg").html("<p class='error'>Invalid username and/or password.</p>");
-        //    }
-        //});
+        var CustomerEdit = baseUrl + "/customerEdit";
+        //var vehicleCustomerUrl = baseUrl + "/vechicleAdd";
+        var CustomerId = 0;
         var data = {
             name: $("#name").val(),
-            street: $("#address").val(),
+            phone: $("#phone").val(),
+            email: $("#email").val(),
+            poBox: $("#pobox").val(),
+            street: $("#street").val(),
+            city: $("#city").val()
         }
-        if (data.name != "" && data.street != "") {
-            $.ajax({
-                type: "POST",
-                url: NewCustomerUrl + '?name=' + data.name + '&street=' + data.street,
-                //data: JSON.stringify(data),
-                //contentType: "application/json; charset=utf-8",
-                //dataType: "json",
-                //processdata: false,
-                cache: false,
-                success: function (data, statusText, xhr) {
-                    //debugger;
-                    $("#popupMessage").text("");
-                    if (xhr.status == 200 || xhr.status == 201) {
-                        $("#popupMessage").text("User Created Successfully.");
-                        var CustomerId = data;
-                    } else {
-                        $("#popupMessage").text("User Details Insertion Failed");
+        if (data.name != "" && data.phone != "" && data.email != "" && data.poBox != "") {
+            ///// Create or update customer
+            //// Fund 0 - create new customer
+            //// Not 0 - Update customer
+            if (Global.SelectedCustomerId == 0) {
+                $.ajax({
+                    type: "POST",
+                    url: NewCustomerUrl + '?name=' + data.name + '&street=' + data.street + '&pobox=' + data.poBox + '&city=' + data.city + '&phone=' + data.phone + '&email=' + data.email,
+                    cache: false,
+                    success: function (data, statusText, xhr) {
+                        debugger;
+                        $("#popupMessage").text("");
+                        if (xhr.status == 200 || xhr.status == 201) {
+                            debugger;
+                            $("#popupMessage").text("User Created Successfully.");
+                            var CustomerId = data;
+                            Global.SelectedCustomerId = data;
+                            $("#createCustomer").val("Update");
+                            $(".additemlist").show();
+                            $('.cd-popup').addClass('is-visible');
+
+                        } else {
+                            $("#popupMessage").text("User Details Insertion Failed");
+                            $('.cd-popup').addClass('is-visible');
+                        }
                     }
-                    $(".km-header").css("visibility", "hidden");
-                    $('.cd-popup').addClass('is-visible');
-                }
-            });
+                });
+            } else {
+                $.ajax({
+                    type: "POST",
+                    url: CustomerEdit + '?id=' + Global.SelectedCustomerId + '&name=' + data.name + '&street=' + data.street + '&pobox=' + data.pobox + '&city=' + data.city + '&phone=' + data.phone + '&email=' + data.email,
+                    cache: false,
+                    success: function (data, statusText, xhr) {
+                        $("#popupMessage").text("");
+                        debugger;
+                        if (xhr.status == 200 || xhr.status == 201) {
+                            debugger;
+                            $("#popupMessage").text("User Created Successfully.");
+                            var CustomerId = data;
+
+                            $(".additemlist").show();
+                            $('.cd-popup').addClass('is-visible');
+
+                        } else {
+                            $("#popupMessage").text("User Details Insertion Failed");
+                            $('.cd-popup').addClass('is-visible');
+                        }
+                    }
+                });
+            }
         } else {
             $("#popupMessage").text("");
             $("#popupMessage").text("Please enter the customer detail.");
             $(".km-header").css("visibility", "hidden");
             $('.cd-popup').addClass('is-visible');
-
         }
+    });
+
+    ////Customer Clear
+
+    $("#clearCustomer").click(function () {
+        //clear values
+        $("#name").val("");
+        $("#street").val("");
+        $("#city").val("");
+        $("#pobox").val("");
+        $("#phone").val("");
+        $("#email").val("");
+
     });
 
     //// Alert Popup Action
@@ -201,7 +228,7 @@ require(['kendo', 'app'], function (kendo, app) {//['app'], function (app) {
     });
 
     //// confirm ok click
-    $("#confirmOk").click(function () {
+    $("#confirmOk").on('click', function () {
         $("#popupMessage").text("");
         $(".km-header").css("visibility", "visible");
         $('.cd-popup').removeClass('is-visible');
@@ -230,52 +257,251 @@ require(['kendo', 'app'], function (kendo, app) {//['app'], function (app) {
     //// confirm ok click
     $("#addvehicle").click(function () {
         var vehiclePlateNumber = $(".vehicleplatenumber").val();
+        var createVehicleUrl = baseUrl + "/createVehicle";
+
+        if (Global.CustomerCreatesNewVehicle == true) {
+            Global.NewVehicleBrand = $("#NewVehicleBrand").val();
+            Global.NewVehicleModel = $("#NewVehicleModel").val();
+            vehiclePlateNumber = $("#NewVehiclePlate").val();
+            Global.NewVehicleBrandId = null;
+            Global.NewVehicleModelId = null;
+        } else {
+            Global.NewVehicleBrandId = $('#ddlVehicleBrand option:selected').val();
+            Global.NewVehicleModelId = $('#ddlVehicleModel option:selected').val();
+            Global.NewVehicleBrand = $('#ddlVehicleBrand option:selected').text();
+            Global.NewVehicleModel = $('#ddlVehicleModel option:selected').text();
+        }
+
         if (Global.NewVehicleBrand != "" && Global.NewVehicleModel != "" && vehiclePlateNumber != "") {
             $("#errorMessage").text("");
 
             var id = Global.CustomersVehicle.length;
+            brandId, modelId, license_plate
+            $.ajax({
+                type: "POST",
+                url: createVehicleUrl + '?brandId=' + Global.NewVehicleBrandId + '&modelId=' + Global.NewVehicleModelId + '&license_plate=' + vehiclePlateNumber,
+                cache: false,
+                success: function (data, statusText, xhr) {
 
-            Global.CustomersVehicle.push({
-                "Id": id,
-                "VehicleBrand": Global.NewVehicleBrand, "VehicleBrandId": Global.NewVehicleBrandId,
-                "VehicleModel": Global.NewVehicleModel, "VehicleModelId": Global.NewVehicleModelId,
-                "VehiclePlateNumber": vehiclePlateNumber
+                    $("#popupMessage").text("");
+                    if (xhr.status == 200 || xhr.status == 201) {
+                        debugger;
+                        $("#popupMessage").text("Vehicle added to customer successfully.");
+                        var CustomerId = data;
+                        Global.SelectedCustomerId = data;
+                        $("#createCustomer").val("Update");
+                        $(".additemlist").show();
+                        var vehicleId = data;
+
+                        Global.CustomersVehicle.push({
+                            "Id": vehicleId,
+                            "VehicleBrand": Global.NewVehicleBrand, "VehicleBrandId": Global.NewVehicleBrandId,
+                            "VehicleModel": Global.NewVehicleModel, "VehicleModelId": Global.NewVehicleModelId,
+                            "VehiclePlateNumber": vehiclePlateNumber
+                        });
+
+                        $('<div class="vehiclenumber" id="vehicle' + id + '"><div class="vehicleinput"><label>' + Global.NewVehicleBrand + ' / ' + Global.NewVehicleModel + '</label></div> <div id="removeVN' + id + '" onclick="javascript: removefunction(this);" class="remScnt vehiclenoremove"><img data-id="' + id + '" onclick="javascript: removefunction(this);" src="./Images/Removebutton2.png" class="removebutton" alt="remove" style=""></div></div>').appendTo('#p_scents');
+
+                        window.history.go(-1);
+
+                    } else {
+                        $("#popupMessage").text("Failed to add Vehicle");
+                    }
+
+                    $(".km-header").css("visibility", "hidden");
+                    $('.cd-popup').addClass('is-visible');
+                }
             });
 
-            $('<div class="vehiclenumber" id="vehicle' + id + '"><div class="vehicleinput"><label>' + Global.NewVehicleBrand + ' / ' + Global.NewVehicleModel + '</label></div> <div id="removeVN' + id + '" onclick="javascript: removefunction(this);" class="remScnt vehiclenoremove"><img data-id="' + id + '" onclick="javascript: removefunction(this);" src="./Images/Removebutton2.png" class="removebutton" alt="remove" style=""></div></div>').appendTo('#p_scents');
 
-            $(".km-header").css("visibility", "visible");
-            $('.cd-vehicleaddpopup').removeClass('is-visible');
+
         } else {
             $("#errorMessage").text("Please enter vehicle details.");
         }
     });
 
+    //// View New Vehicle input boxs
+    $("#CreateNewVehicle").on('click', function (event) {
+        if (Global.CustomerCreatesNewVehicle == false) {
+            $("#ExistingVehile").slideUp();
+            $("#NewVehicle").slideDown();
+            Global.CustomerCreatesNewVehicle = true;
+        } else {
+            Global.CustomerCreatesNewVehicle = false;
+            $("#ExistingVehile").slideDown();
+            $("#NewVehicle").slideUp();
+        }
+    });
+
+    $("#ddlVehicleBrand").change(function () {
+        $.ajax({
+            cache: false,
+            type: "GET",
+
+            url: "http://adigielite.ddns.net:8069/openacademy/OpenacademyCustomer/getModelbyBarand?brand_id=" + $(this).val(),
+            datatype: "json",
+            statusCode: {
+                200: function (data) {
+                    $("#ddlVehicleModel").get(0).options.length = 0;
+                    $("#ddlVehicleModel").get(0).options[0] = new Option("-- Select --", "");
+                    $.each(data, function (index, obj) {
+                        $("#ddlVehicleModel").append(new Option(obj.modelname, obj.id));
+                    });//
+
+                },
+                401: function (data) {
+                    alert('401: Unauthorized'); // Handle the 401 error here.
+                },
+                400: function (data) {
+                    alert("400: Bad request");
+                },
+                408: function (data) {
+                    alert("408: Timeout error");
+                }
+            }
+        });
+
+    }).change();
+
+    //Login Page Js Begin  Here
+
+    $("#imgremb").click(function () {
+        if ($("#isRemember").val() == "0") {
+            $("#imgremb").attr("src", "images/on.png");
+            $("#isRemember").val("1");
+        } else {
+            $("#imgremb").attr("src", "images/off.png");
+            $("#isRemember").val("0");
+        }
+    });
+
+    $(".rememberme").click(function () {
+        if ($("#isRemember").val() == "0") {
+            $("#imgremb").attr("src", "images/on.png");
+            $("#isRemember").val("1");
+        } else {
+            $("#imgremb").attr("src", "images/off.png");
+            $("#isRemember").val("0");
+        }
+    });
+
+    $(".login-btn").click(function () {
+        alert("in");
+        var data = {
+            name: $("#userName").val(),
+            password: $("#password").val(),
+        };
+        var loginUrl = "";
+        if (data.name != "" && data.password != "") {
+            //$.ajax({
+            //    type: "POST",
+            //    url: loginUrl + '?name=' + data.name + '&street=' + data.password,
+            //    //data: JSON.stringify(data),
+            //    //contentType: "application/json; charset=utf-8",
+            //    //dataType: "json",
+            //    //processdata: false,
+            //    cache: false,
+            //    success: function (data, statusText, xhr) {
+            //        //debugger;
+            //        $("#popupMessage").text("");
+            //        if (xhr.status == 200 || xhr.status == 201) {
+            //            //$("#popupMessage").text("User Created Successfully.");
+            //            var CustomerId = data;
+            //        } else {
+            //            $("#popupMessage").text("Invalid User Name and Password");
+            //        }
+
+            //        $('.cd-popup').addClass('is-visible');
+            //    }
+            //});
+            if (data.name == "admin" && data.password == "admin") {
+                var link = document.createElement('a');
+                link.href = "#garagepageView";
+                document.body.appendChild(link);
+                link.click();
+            }
+
+
+        } else {
+            $("#popupMessage").text("");
+            $("#popupMessage").text("Please enter the User Name and Password ");
+            $('.cd-popup').addClass('is-visible');
+        }
+    });
+
+
+    $("#datepickerAFD").kendoDatePicker();
+    $("#datepickerStatus").kendoDatePicker();
 });
 
 function loadVehicleDropDowns() {
-    //// Bind Vehicle Brand
-    var Brand = [{ "id": 66, "name": "" }, { "id": 1, "name": "Abarth" }, { "id": 2, "name": "Acura" }, { "id": 3, "name": "Alfa" }, { "id": 4, "name": "Audi" }, { "id": 5, "name": "Austin" }, { "id": 6, "name": "Bentley" }, { "id": 7, "name": "Bmw" }, { "id": 8, "name": "Bugatti" }, { "id": 9, "name": "Buick" }, { "id": 10, "name": "Byd" }, { "id": 11, "name": "Cadillac" }, { "id": 12, "name": "Chevrolet" }, { "id": 13, "name": "Chrysler" }, { "id": 14, "name": "Citroen" }, { "id": 15, "name": "Corre La Licorne" }, { "id": 16, "name": "Daewoo" }, { "id": 17, "name": "Dodge" }, { "id": 18, "name": "Ferrari" }, { "id": 19, "name": "Fiat" }, { "id": 20, "name": "Ford" }, { "id": 21, "name": "Holden" }, { "id": 22, "name": "Honda" }, { "id": 23, "name": "Hyundai" }, { "id": 24, "name": "Infiniti" }, { "id": 25, "name": "Isuzu" }, { "id": 26, "name": "Jaguar" }, { "id": 27, "name": "Jeep" }, { "id": 28, "name": "Kia" }, { "id": 29, "name": "Koenigsegg" }, { "id": 30, "name": "Lagonda" }, { "id": 31, "name": "Lamborghini" }, { "id": 32, "name": "Lancia" }, { "id": 33, "name": "Land Rover" }, { "id": 34, "name": "Lexus" }, { "id": 35, "name": "Lincoln" }, { "id": 36, "name": "Lotus" }, { "id": 37, "name": "Maserati" }, { "id": 38, "name": "Maybach" }, { "id": 39, "name": "Mazda" }, { "id": 40, "name": "Mercedes" }, { "id": 41, "name": "Mg" }, { "id": 42, "name": "Mini" }, { "id": 43, "name": "Mitsubishi" }, { "id": 44, "name": "Morgan" }, { "id": 45, "name": "Nissan" }, { "id": 46, "name": "Oldsmobile" }, { "id": 47, "name": "Opel" }, { "id": 48, "name": "Peugeot" }, { "id": 49, "name": "Pontiac" }, { "id": 50, "name": "Porsche" }, { "id": 51, "name": "Rambler" }, { "id": 52, "name": "Renault" }, { "id": 53, "name": "Rolls-Royce" }, { "id": 54, "name": "Saab" }, { "id": 55, "name": "Scion" }, { "id": 56, "name": "Skoda" }, { "id": 57, "name": "Smart" }, { "id": 58, "name": "Steyr" }, { "id": 59, "name": "Subaru" }, { "id": 60, "name": "Tesla Motors" }, { "id": 61, "name": "Toyota" }, { "id": 62, "name": "Trabant" }, { "id": 63, "name": "Volkswagen" }, { "id": 64, "name": "Volvo" }, { "id": 65, "name": "Willys" }];
-    var Model = [{ "modelname": "A1", "id": 13 }, { "modelname": "A3", "id": 14 }, { "modelname": "A4", "id": 15 }, { "modelname": "A5", "id": 16 }, { "modelname": "A6", "id": 17 }, { "modelname": "A7", "id": 18 }, { "modelname": "A8", "id": 19 }, { "modelname": "Q3", "id": 20 }, { "modelname": "Q5", "id": 21 }, { "modelname": "Q7", "id": 22 }, { "modelname": "TT", "id": 23 }, { "modelname": "Serie 1", "id": 24 }, { "modelname": "Serie 3", "id": 25 }, { "modelname": "Serie 5", "id": 26 }, { "modelname": "Serie 6", "id": 27 }, { "modelname": "Serie 7", "id": 28 }, { "modelname": "Serie Hybrid", "id": 32 }, { "modelname": "Serie M", "id": 31 }, { "modelname": "Serie X", "id": 29 }, { "modelname": "Serie Z4", "id": 30 }, { "modelname": "Dodge Dart", "id": 47 }, { "modelname": "civic123", "id": 49 }, { "modelname": "Class A", "id": 33 }, { "modelname": "Class B", "id": 34 }, { "modelname": "Class C", "id": 35 }, { "modelname": "Class CL", "id": 36 }, { "modelname": "Class CLS", "id": 37 }, { "modelname": "Class E", "id": 38 }, { "modelname": "Class GL", "id": 40 }, { "modelname": "Class GLK", "id": 41 }, { "modelname": "Class M", "id": 39 }, { "modelname": "Class R", "id": 42 }, { "modelname": "Class S", "id": 43 }, { "modelname": "Class SLK", "id": 44 }, { "modelname": "SLS", "id": 45 }, { "modelname": "nm1", "id": 48 }, { "modelname": "Agila", "id": 3 }, { "modelname": "Ampera", "id": 12 }, { "modelname": "Antara", "id": 11 }, { "modelname": "Astra", "id": 2 }, { "modelname": "AstraGTC", "id": 6 }, { "modelname": "Combo Tour", "id": 4 }, { "modelname": "Corsa", "id": 1 }, { "modelname": "Insignia", "id": 9 }, { "modelname": "Meriva", "id": 5 }, { "modelname": "Mokka", "id": 10 }, { "modelname": "Zafira", "id": 7 }, { "modelname": "Zafira Tourer", "id": 8 }];
+    var getBarndUrl = baseUrl + "/getBrand";
+    $.ajax({
+        cache: false,
+        type: "GET",
+        url: getBarndUrl + "?id=73",
+        datatype: "json",
+        success: function (data) {
+            $("#ddlVehicleBrand").get(0).options.length = 0;
+            $("#ddlVehicleBrand").get(0).options[0] = new Option("-- Select --", "");
+            $.each(data, function (index, obj) {
+                //console.log(obj.name);
+                $("#ddlVehicleBrand").append(new Option(obj.name, obj.id));
+                //$('#ddlVehicleBrand').append('<option value="' + obj.id + '">' + obj.name + '</option>');
+            });//
+        },
+    });
 
-    Global.objVehicleBrandDropDownList = $("#vehicleBrand").kendoDropDownList({
-        optionLabel: "--select--",
-        dataTextField: "name",
-        dataValueField: "id",
-        dataSource: Brand,
-        index: 0,
-        select: onBrandSelect
-    }).data("kendoDropDownList");
+    ////statusCode: {
+    ////    200: function (data) {
+    ////        $("#ddlVehicleBrand").get(0).options.length = 0;
+    ////        $("#ddlVehicleBrand").get(0).options[0] = new Option("-- Select --", "");
+    ////        $.each(data, function (index, obj) {
+    ////            $("#ddlVehicleBrand").append(new Option(obj.name, obj.id));
+    ////        });//
 
-    //// Bind Vehicle Model
-    Global.objVehicleModelDropDownList = $("#vehicleModel").kendoDropDownList({
-        optionLabel: "--select--",
-        dataTextField: "modelname",
-        dataValueField: "id",
-        dataSource: Model,
-        index: 0,
-        select: onModelSelect
-    }).data("kendoDropDownList");
+    ////    },
+    ////        401: function (data) {
+    ////            alert('401: Unauthorized'); // Handle the 401 error here.
+    ////        },
+    ////        400: function (data) {
+    ////            alert("400: Bad request");
+    ////        },
+    ////        408: function (data) {
+    ////            alert("408: Timeout error");
+    ////        }
+    ////}
+
+    //////// Bind Vehicle Brand
+    ////Global.objVehicleBrandDropDownList = $("#vehicleBrand").kendoDropDownList({
+    ////    optionLabel: "--select--",
+    ////    dataTextField: "name",
+    ////    dataValueField: "id",
+    ////    dataSource: {
+    ////        transport: {
+    ////            read: "http://adigielite.ddns.net:8069/openacademy/OpenacademyCustomer/brand",
+    ////            dataType: "json"
+    ////        }
+    ////    },
+    ////    index: 0,
+    ////    select: onBrandSelect
+    ////}).data("kendoDropDownList");
+
+    //////// Bind Vehicle Model
+    ////Global.objVehicleModelDropDownList = $("#vehicleModel").kendoDropDownList({
+    ////    autoBind: false,
+    ////    optionLabel: "--select--",
+    ////    dataTextField: "modelname",
+    ////    dataValueField: "id",
+    ////    dataSource: {
+    ////        transport: {
+    ////            read: "http://adigielite.ddns.net:8069/openacademy/OpenacademyCustomer/getModelbyBarand?brand_id=0",
+    ////            dataType: "json"
+    ////        }
+    ////    },
+    ////    index: 0,
+    ////    select: onModelSelect
+    ////}).data("kendoDropDownList");
 
     Global.VehicleDropdownloaded = true;
 }
@@ -312,7 +538,7 @@ function loadOrder(e) {
     $("#ordermenu").addClass("active");
     $("#addbutton").hide();
     $(".searchbox").css("width", "83%");
-    $(".ordermenu").show();
+    $(".ordermenu").css("display", "inline-block");
     showCustomSearchPanel(true);
     window.app.loadOrder(e);
 };
@@ -363,6 +589,7 @@ function CustomerEdit(e) {
     showCustomSearchPanel(false);
     var customerID = $(e).data("customerid");
     var selectedCustomer = window.app.getSelectedCustomer(customerID);
+    Global.SelectedCustomerId = customerID;
     debugger;
     if (selectedCustomer != null) {
 
@@ -370,7 +597,9 @@ function CustomerEdit(e) {
         $("#phone").val(selectedCustomer.phone);
         $("#email").val(selectedCustomer.email);
         $("#address").val(selectedCustomer.street);
-        $("#pobox").val(selectedCustomer.pobox);
+        $("#pobox").val(selectedCustomer.zip);
+        $("#street").val(selectedCustomer.street);
+        $("#city").val(selectedCustomer.city);
 
         if (selectedCustomer.vehicle != null) {
             for (var i = 0; i < selectedCustomer.vehicle.length; i++) {
@@ -381,6 +610,10 @@ function CustomerEdit(e) {
             }
         }
     }
+
+    $(".additemlist").show();
+
+    $("#createCustomer").val("Update");
 
     var link = document.createElement('a');
     link.href = "#customerEditview";
@@ -422,7 +655,8 @@ function onBrandSelect(e) {
     ////kendoConsole.log("event :: select (" + dataItem.text + " : " + dataItem.value + ")");
     Global.NewVehicleBrand = dataItem.name;
     Global.NewVehicleBrandId = dataItem.id;
-    ////}
+
+
 };
 
 function onModelSelect(e) {
@@ -433,3 +667,17 @@ function onModelSelect(e) {
     Global.NewVehicleModelId = dataItem.id;
     //// }
 };
+
+function clearVehicleInputValues() {
+    $('#ddlVehicleBrand').val("0").prop('selected', true);
+    $('#ddlVehicleModel').val("0").prop('selected', true);
+    $("#vehiclePlateNumber").val('');
+    Global.NewVehicleBrand = "";
+    Global.NewVehicleBrandId = "";
+    Global.NewVehicleModel = "";
+    Global.NewVehicleModelId = "";
+    $("#NewVehicleBrand").val("");
+    $("#NewVehicleModel").val("");
+    $("#NewVehiclePlate").val("");
+    $("#errorMessage").text("");
+}

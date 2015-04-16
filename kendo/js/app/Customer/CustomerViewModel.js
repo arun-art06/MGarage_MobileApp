@@ -15,7 +15,7 @@ define([
             var dataSource = new kendo.data.DataSource({
                 transport: {
                         read: {
-                            url: baseUrl+"/list/",
+                            url: baseUrl + "/getAllCustomer/",
                             dataType: "json"
                         }
                     }               

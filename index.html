@@ -11,11 +11,10 @@
     <link rel="stylesheet" href="./kendo/styles/font-awesome.css" />
 
     <link rel="stylesheet" href="./kendo/styles/km-fa-font.css" />
-    `
     <link href="./kendo/styles/style.css" rel="stylesheet" />
     <link rel="stylesheet" href="./kendo/styles/main.css" />
 
-    <!--<script src="./cordova.android.js"></script>-->
+    <script src="./cordova.js"></script>
     <script data-main="./kendo/js/main" src="./kendo/js/lib/require.min.js"></script>
 
 </head>
@@ -29,7 +28,7 @@
                 <div id='cssmenu' style="z-index: 999999; background-image: url(./Images/Background1.png); background-size: 100%; width: 100%;">
                     <ul class="TopMenu">
                         <li id="customermenu"><a href='customerView' data-role="button" onclick="loadCustomer(this)"><span>Customer</span></a></li>
-                        <li id="garagemenu" class='active'><a href='garagepageView' data-role="button" onclick="loadInGarage(this)"><span>In Garage</span></a></li>
+                        <li id="garagemenu"><a href='garagepageView' data-role="button" onclick="loadInGarage(this)"><span>In Garage</span></a></li>
                         <li id="ordermenu" style="width: 31%; border-right: 0;"><a href='ordersView' data-role="button" onclick="loadOrder(this)"><span>Orders</span></a></li>
                     </ul>
                 </div>
@@ -51,9 +50,9 @@
                             <img src="./Images/add.png" style="width: 38px; margin-left: -1px; margin-top: 0px;" /></a>
                     </div>
                 </div>
-                <div class="ordermenu" style="display: inline-block; width: 100%;">
+                <div class="ordermenu" style="display: none; width: 100%;">
                     <ul class="menu">
-                        <li><a href="CreateOrder"><span class="fa fa-plus"></span>Create</a></li>
+                        <li><a href="createOrder" data-role="button"><span class="fa fa-plus"></span>Create</a></li>
                         <li><a href="WorkOrder">Work</a></li>
                         <li><a href="ordersView">Order</a></li>
                     </ul>
@@ -73,25 +72,58 @@
 
                 <div class="cd-vehicleaddpopup" role="alert">
                     <div class="cd-vehicleaddpopup-container">
-                        <ul class="customerEdit">
+                        <!--<ul class="cd-buttons" style="margin-top: 12px;">
+                            <li><a id="CreateNewVehicle" style="background: #5483F5 none repeat scroll 0% 0%;">Create New Vechicle</a></li>
+                            <li></li>
+                        </ul>
+                        <ul id="ExistingVehile" class="customerEdit">
                             <li>
                                 <label>
                                     <span style="margin-right: 10px;">Brand</span>
-                                    <input id="vehicleBrand" value="0" />
+                                    <select id="ddlVehicleBrand" class="select_style">
+                                        <option value="0">-- Select --</option>
+                                    </select>
+
                                 </label>
                             </li>
                             <li>
                                 <label>
                                     <span style="margin-right: 10px;">Model</span>
-                                    <input id="vehicleModel" value="0" />
+                                    <select id="ddlVehicleModel" class="select_style">
+                                        <option value="0">-- Select --</option>
+                                    </select>
                                 </label>
                             </li>
                             <li>
                                 <label>
                                     Plate
-                                    <input type="text" id="vehiclePlateNumber" class="text-input vehicleplatenumber" />
+                                    <input type="text" type="search" id="vehiclePlateNumber" class="text-input vehicleplatenumber" />
                                 </label>
                             </li>
+                        </ul>
+                        <ul id="NewVehicle" style="display: none;" class="customerEdit">
+                            <li>
+                                <label>
+                                    <span>Brand</span>
+                                    <input id="NewVehicleBrand" type="text" class="text-input vehicleplatenumber" />
+
+                                </label>
+                            </li>
+                            <li>
+                                <label>
+                                    <span>Model</span>
+                                    <input id="NewVehicleModel" type="text" class="text-input vehicleplatenumber" />
+                                </label>
+                            </li>
+                            <li>
+                                <label>
+                                    <span style="margin-right: 8px;">Plate</span>
+                                    <input type="text" id="NewVehiclePlate" class="text-input vehicleplatenumber" />
+                                </label>
+                            </li>
+
+                        </ul>
+                        <ul>
                             <li>
                                 <label id="errorMessage"></label>
                             </li>
@@ -99,9 +131,10 @@
                         <ul class="cd-buttons" style="margin-top: 12px;">
                             <li><a id="addvehicle">Add</a></li>
                             <li style="display: none;"><a>Cancel</a></li>
-                        </ul>
+                        </ul>-->
                         <a class="cd-vehicleaddpopup-close img-replace"></a>
                     </div>
+                    <!-- cd-popup-container -->
                 </div>
 
             </div>
@@ -113,23 +146,38 @@
         data-role="view"
         data-title="Login"
         data-transition="slide:left">
-        <h3>Sign In</h3>
+
+        <header data-role="header">
+        </header>
+        <h3 class="Tittle">Tittle Of the Page</h3>
+        <h4 class="Login">Login</h4>
         <ul data-role="listview" data-style="inset">
-            <li>
-                <label>
-                    Email
-                    <input id="usr_email" type="text"  />
+            <li class="logintext">
+                <label class="loginlabelname">
+                    User Name
+                    <input type="text" placeholder="" class="logintexboxv3" id="userName" />
                 </label>
             </li>
-            <li>
-                <label>
+            <li style="padding-top: 0px;">
+                <label class="loginlabelname">
                     Password
-                    <input id="usr_password" type="text"   />
+                <input type="password" placeholder="" class="logintexboxv3" id="password" />
                 </label>
             </li>
         </ul>
-        <a href="#dlg-invalid-credentials" data-rel="popup" data-transition="pop" data-position-to="window" id="btn-submit" class="ui-btn ui-btn-b ui-corner-all mc-top-margin-1-5">Submit</a>
-        <p class="mc-top-margin-1-5"><a href="begin-password-reset.html">Can't access your account?</a></p>
+        <ul style="list-style: none; padding-left: 15px !important;">
+            <li style="margin-top: 15px;">
+                <input type="hidden" value="0" id="isRemember" />
+                <span style="display:inline-block; width:90%; margin:0 auto;">
+                    <img style="width: 14%; margin-left: 17px; cursor: pointer;" src="images/off.png" id="imgremb" />
+                    <!--<h5 class="rememberme">Remember Me</h5>/span>-->
+                    <img src="./Images/login-btn.png" class="login-btn" /></span></li>
+
+            <!--<li>
+                <h5 style="padding: 20px; text-decoration: underline;">Forget Password <span class="signup">SignUp</span></h5>
+            </li>-->
+        </ul>
+
     </div>
 
     <div id="garagepageView"
@@ -165,14 +213,40 @@
         data-show="loadCustomerEdit"
         data-transition="slide:right">
 
+         <header data-role="header">
+            <div data-role="navbar">
+                <a class="nav-button backbutton" data-align="left" data-role="backbutton">Back</a>
+                <span data-role="view-title"></span>
+            </div>
+        </header>
+
         <form action="./index.html">
-            <div data-role="scroller" class="scroller-content">
+            <div data-role="scroller" class="scroller-content" style="padding-bottom: 20px;">
 
                 <ul class="customerEdit" data-role="listview" data-style="inset">
                     <li>
                         <label class="labelname">
                             Name
                     <input type="search" id="name" class="text-input" style="background: url('./Images/whitebackground.jpg')no-repeat; width: 66%; margin-right: 5px;" value="" />
+                        </label>
+                    </li>
+                    <li>
+                        <label class="labelname">
+                            Street
+                <input type="search" id="street" class="text-input" style="background-image: url('./Images/whitebackground.jpg'); width: 66%; margin-right: 5px;" value="" />
+                        </label>
+                    </li>
+
+                    <li>
+                        <label class="labelname">
+                            POBox
+                    <input type="search" id="pobox" class="text-input" style="background-image: url('./Images/whitebackground.jpg'); width: 66%; margin-right: 5px;" value="" />
+                        </label>
+                    </li>
+                    <li>
+                        <label class="labelname">
+                            City
+                    <input type="search" id="city" class="text-input" style="background-image: url('./Images/whitebackground.jpg'); width: 66%; margin-right: 5px;" value="" />
                         </label>
                     </li>
                     <li>
@@ -187,32 +261,93 @@
                 <input type="search" id="email" class="text-input" style="background-image: url('./Images/whitebackground.jpg'); width: 66%; margin-right: 5px;" value="" />
                         </label>
                     </li>
-                    <li>
-                        <label class="labelname">
-                            Address
-                <input type="search" id="address" class="text-input" style="background-image: url('./Images/whitebackground.jpg'); width: 66%; margin-right: 5px;" value="" />
-                        </label>
-                    </li>
-                    <li>
-                        <label class="labelname">
-                            POBox
-                    <input type="search" id="pobox" class="text-input" style="background-image: url('./Images/whitebackground.jpg'); width: 66%; margin-right: 5px;" value="" />
-                        </label>
-                    </li>
+
                 </ul>
                 <div class="additemlist">
                     <div class="itemlabel">
                         Vehicle
                     </div>
                     <div class="itemaddbutton">
-                        <img src="./Images/menuadd.png" class="addbutton" alt="Mountain View" style="">
+                        <img src="./Images/menuadd.png" class="addbutton" alt="Mountain View">
                     </div>
                 </div>
                 <div id="p_scents">
                 </div>
                 <input type="button" id="createCustomer" class="submit" value="Done">
+                <input type="button" id="clearCustomer" class="submit" value="Clear">
             </div>
         </form>
+    </div>
+
+    <div data-role="view" id="AddCustomerVehicle" data-layout="mobile-view" data-title="Add New Vehicle">
+        <header data-role="header">
+            <div data-role="navbar">
+                <a class="nav-button backbutton" data-align="left" data-role="backbutton">Back</a>
+                <span data-role="view-title"></span>
+            </div>
+        </header>
+        <div class="cd-vehicleaddpopup-container">
+            <ul class="cd-buttons" style="margin-top: 12px;">
+                <li><a id="CreateNewVehicle" style="background: #5483F5 none repeat scroll 0% 0%;">Create New Vechicle</a></li>
+                <li></li>
+            </ul>
+            <ul id="ExistingVehile" class="customerEdit">
+                <li>
+                    <label>
+                        <span style="margin-right: 10px;">Brand</span>
+                        <select id="ddlVehicleBrand" class="select_style">
+                            <option value="0">-- Select --</option>
+                        </select>
+
+                    </label>
+                </li>
+                <li>
+                    <label>
+                        <span style="margin-right: 10px;">Model</span>
+                        <select id="ddlVehicleModel" class="select_style">
+                            <option value="0">-- Select --</option>
+                        </select>
+                    </label>
+                </li>
+                <li>
+                    <label>
+                        Plate
+                                    <input type="text" type="search" id="vehiclePlateNumber" class="text-input vehicleplatenumber" />
+                    </label>
+                </li>
+            </ul>
+            <ul id="NewVehicle" style="display: none;" class="customerEdit">
+                <li>
+                    <label>
+                        <span>Brand</span>
+                        <input id="NewVehicleBrand" type="text" class="text-input vehicleplatenumber" />
+
+                    </label>
+                </li>
+                <li>
+                    <label>
+                        <span>Model</span>
+                        <input id="NewVehicleModel" type="text" class="text-input vehicleplatenumber" />
+                    </label>
+                </li>
+                <li>
+                    <label>
+                        <span style="margin-right: 8px;">Plate</span>
+                        <input type="text" id="NewVehiclePlate" class="text-input vehicleplatenumber" />
+                    </label>
+                </li>
+
+            </ul>
+            <ul>
+                <li>
+                    <label id="errorMessage"></label>
+                </li>
+            </ul>
+            <ul class="cd-buttons" style="margin-top: 12px;">
+                <li><a id="addvehicle">Add</a></li>
+                <li style="display: none;"><a>Cancel</a></li>
+            </ul>
+        </div>
     </div>
 
     <div id="ordersView"
@@ -232,12 +367,187 @@
     <!-- order create -->
     <div id="createOrder"
         data-role="view"
-        data-title="Create Order"
-        data-transition="slide:left">
-        <div>
-        </div>
+        data-title="Create New Order"
+        data-transition="slide:right">
+        <header data-role="header">
+            <div data-role="navbar">
+                <a class="nav-button backbutton" data-align="left" data-role="backbutton">Back</a>
+                <span data-role="view-title"></span>
+            </div>
+        </header>
 
+        <div class="cd-vehicleaddpopup-container" style="padding: 0px 0px 68px; margin-top: 3em; margin-bottom: 48px;">
+            <ul class="cd-buttons" style="margin-top: 12px;">
+                <!--<li><a id="A1" style="background: #5483F5 none repeat scroll 0% 0%;">Create New Vechicle</a></li>-->
+                <li></li>
+            </ul>
+            <ul id="Ul1" class="customerEdit">
+                <li>
+                    <label>
+                        <span class="labelcustomerEdit" style="margin-right: 10px;">Garage</span>
+                        <select id="Select1" class="select_style">
+                            <option value="0">-- Select --</option>
+                        </select>
+
+
+                    </label>
+                </li>
+                <li>
+                    <label>
+                        <span class="labelcustomerEdit" style="margin-right: 10px;">Garage User</span>
+                        <select id="Select2" class="select_style">
+                            <option value="0">-- Select --</option>
+                        </select>
+                    </label>
+                </li>
+                <li>
+                    <label>
+                        <span class="labelcustomerEdit" style="margin-right: 10px;">Customer</span>
+                        <select id="Select3" class="select_style">
+                            <option value="0">-- Select --</option>
+                        </select>
+
+                    </label>
+                </li>
+                <li>
+                    <label>
+                        <span class="labelcustomerEdit" style="margin-right: 10px;">Vechicle</span>
+                        <select id="Select4" class="select_style">
+                            <option value="0">-- Select --</option>
+                        </select>
+
+                    </label>
+                </li>
+                <li>
+                    <label>
+                        <span class="labelcustomerEdit" style="margin-right: 10px;">Service</span>
+                        <select id="Select5" class="select_style">
+                            <option value="0">-- Select --</option>
+                        </select>
+
+                    </label>
+                </li>
+                <li>
+                    <label>
+                        <span class="labelcustomerEdit" style="margin-right: 10px;">Status</span>
+                        <select id="Select6" class="select_style">
+                            <option value="0">-- Select --</option>
+                        </select>
+
+                    </label>
+                </li>
+                <li>
+                    <label>
+                        <span class="labelcustomerEdit" style="margin-right: 10px;">Sub-Status</span>
+                        <select id="Select7" class="select_style">
+                            <option value="0">-- Select --</option>
+                        </select>
+
+                    </label>
+                </li>
+                <li>
+                    <label>
+                        <span class="labelcustomerEdit" style="margin-right: 10px;">Estimation Cost</span>
+                        <select id="Select8" class="select_style">
+                            <option value="0">-- Select --</option>
+                        </select>
+
+                    </label>
+                </li>
+                <div>
+                    <div class="editVechicle">
+                        Job
+                    </div>
+                    <div class="edititemaddbutton">
+                        <a href="#addNewTask" data-role="button" class="addNewTask">
+                            <img src="./Images/menuadd.png" class="addbutton" alt="Mountain View"></a>
+                    </div>
+                </div>
+                <div style="padding-bottom:20px;">
+                <input type="button" id="Button1" class="submit" value="Done"/>
+                <input type="button" id="Button2" class="submit" value="Clear"/>
+                    </div>
+        </div>
+    </div>
     </div>
 
+<!-- create new task -->
+    <div id="addNewTask"
+        data-role="view"
+        data-title="Add New Job"
+        data-transition="slide:left">
+        <header data-role="header">
+            <div data-role="navbar">
+                <a class="nav-button backbutton" data-align="left" data-role="backbutton">Back</a>
+                <span data-role="view-title"></span>
+            </div>
+        </header>
+        <div class="cd-vehicleaddpopup-container" style="padding: 0px 0px 68px; margin-top: 3em; margin-bottom: 48px;">
+            <ul class="cd-buttons" style="margin-top: 12px;">
+                <!--<li><a id="A1" style="background: #5483F5 none repeat scroll 0% 0%;">Create New Vechicle</a></li>-->
+                <li></li>
+            </ul>
+            <ul id="Ul2" class="customerEdit">
+                <li>
+                    <label>
+                        <span class="labeladdtask">Order</span>
+                        <select id="Select9" class="select_style_new">
+                            <option value="0">-- Select --</option>
+                        </select>
+
+
+                    </label>
+                </li>
+                <li>
+                    <label>
+                        <span class="labeladdtask">Product Type</span>
+                        <select id="Select10" class="select_style_new">
+                            <option value="0">-- Select --</option>
+                        </select>
+                    </label>
+                </li>
+                <li>
+                    <label>
+                        <span class="labeladdtask">Estimated Cost</span>
+                        <input class="select_style_new" value="" type="text"/>
+
+                    </label>
+                </li>
+                <li>
+                    <label>
+                        <span class="labeladdtask">Estimated Finish Date</span>
+                        <select id="Select12" class="select_style_new">
+                            <option value="0">-- Select --</option>
+                        </select>
+
+                    </label>
+                </li>
+                <li>
+                    <label>
+                        <span class="labeladdtask">Actual Cost</span>
+                        <select id="Select13" class="select_style_new">
+                            <option value="0">-- Select --</option>
+                        </select>
+
+                    </label>
+                </li>
+                <li>
+                    <label>
+                        <span class="labeladdtask">Actual Finish Date</span>
+                        <input class="datepicker" id="datepickerAFD" value="10/10/2011" />
+
+                    </label>
+                </li>
+                <li>
+                    <label>
+                        <span class="labeladdtask">Status</span>
+                        <input class="datepicker" id="datepickerStatus" value="10/10/2011" />
+
+                    </label>
+               
+                <input type="button" id="Button3" class="submit" value="Done">
+                <input type="button" id="Button4" class="submit" value="Clear">
+                </div>
+    </div>
 </body>
 </html>
